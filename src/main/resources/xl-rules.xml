@@ -7,93 +7,97 @@
 
 -->
 <rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
-  <rule name="tomcat.repository_create" scope="deployed">
-    <conditions>
-      <type>tomcat.DeployedPackage</type>
-      <operation>CREATE</operation>
-    </conditions>
-    <steps>
-      <os-script>
-        <order>60</order>
-        <description expression="true">'Apply permissions on %s' % (deployed.tomcatHome)</description>
-        <script>tomcat/chmod</script>
-        <freemarker-context>
-          <path expression="true">deployed.tomcatHome</path>
-        </freemarker-context>
-      </os-script>
-      <jython>
-        <order>60</order>
-        <description expression="true">"Create the '%s' tomcat.Server in the XLD Repository" % (deployed.tomcatName)</description>
-        <script>repository/ci/create.py</script>
-        <jython-context>
-          <ci_type>tomcat.Server</ci_type>
-          <ci_id expression="true">"/".join([deployed.container.id,deployed.tomcatName])</ci_id>
-          <ci_properties expression="true">{'home': deployed.tomcatHome,'startCommand':deployed.tomcatStartCommand, 'stopCommand': deployed.tomcatStopCommand}</ci_properties>
-        </jython-context>
-      </jython>
-      <jython>
-        <order>60</order>
-        <description expression="true">"Create the '%s' tomcat.VirtualHost in the XLD Repository" % (deployed.tomcatName)</description>
-        <script>repository/ci/create.py</script>
-        <jython-context>
-          <ci_type>tomcat.VirtualHost</ci_type>
-          <ci_id expression="true">"/".join([deployed.container.id,deployed.tomcatName,'%s.vh' % deployed.tomcatName])</ci_id>
-          <ci_properties expression="true">{}</ci_properties>
-        </jython-context>
-      </jython>
-      <jython>
-        <order>61</order>
-        <description expression="true">"Add '%s' tomcat.Server to the environment " % (deployed.tomcatName)</description>
-        <script>repository/ci/add-to-environment.py</script>
-        <jython-context>
-          <ci_id expression="true">deployedApplication.environment.id</ci_id>
-          <ci_member_id expression="true">"/".join([deployed.container.id,deployed.tomcatName])</ci_member_id>
-        </jython-context>
-      </jython>
-      <jython>
-        <order>61</order>
-        <description expression="true">"Add '%s' tomcat.VirtualHost to the environment " % (deployed.tomcatName)</description>
-        <script>repository/ci/add-to-environment.py</script>
-        <jython-context>
-          <ci_id expression="true">deployedApplication.environment.id</ci_id>
-          <ci_member_id expression="true">"/".join([deployed.container.id,deployed.tomcatName,'%s.vh' % deployed.tomcatName])</ci_member_id>
-        </jython-context>
-      </jython>
-    </steps>
-  </rule>
+    <rule name="tomcat.repository_create" scope="deployed">
+        <conditions>
+            <type>tomcat.DeployedPackage</type>
+            <operation>CREATE</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>60</order>
+                <description expression="true">'Apply permissions on %s' % (deployed.tomcatHome)</description>
+                <script>tomcat/chmod</script>
+                <freemarker-context>
+                    <path expression="true">deployed.tomcatHome</path>
+                </freemarker-context>
+            </os-script>
+            <jython>
+                <order>60</order>
+                <description expression="true">"Create the '%s' tomcat.Server in the XLD Repository" % (deployed.tomcatName)</description>
+                <script>repository/ci/create.py</script>
+                <jython-context>
+                    <ci_type>tomcat.Server</ci_type>
+                    <ci_id expression="true">"/".join([deployed.container.id,deployed.tomcatName])</ci_id>
+                    <ci_properties expression="true">{'home': deployed.tomcatHome,'startCommand':deployed.tomcatStartCommand, 'stopCommand':
+                        deployed.tomcatStopCommand}
+                    </ci_properties>
+                </jython-context>
+            </jython>
+            <jython>
+                <order>60</order>
+                <description expression="true">"Create the '%s' tomcat.VirtualHost in the XLD Repository" % (deployed.tomcatName)</description>
+                <script>repository/ci/create.py</script>
+                <jython-context>
+                    <ci_type>tomcat.VirtualHost</ci_type>
+                    <ci_id expression="true">"/".join([deployed.container.id,deployed.tomcatName,'%s.vh' % deployed.tomcatName])</ci_id>
+                    <ci_properties expression="true">{}</ci_properties>
+                </jython-context>
+            </jython>
+            <jython>
+                <order>61</order>
+                <description expression="true">"Add '%s' tomcat.Server to the environment " % (deployed.tomcatName)</description>
+                <script>repository/ci/add-to-environment.py</script>
+                <jython-context>
+                    <ci_id expression="true">deployedApplication.environment.id</ci_id>
+                    <ci_member_id expression="true">"/".join([deployed.container.id,deployed.tomcatName])</ci_member_id>
+                </jython-context>
+            </jython>
+            <jython>
+                <order>61</order>
+                <description expression="true">"Add '%s' tomcat.VirtualHost to the environment " % (deployed.tomcatName)</description>
+                <script>repository/ci/add-to-environment.py</script>
+                <jython-context>
+                    <ci_id expression="true">deployedApplication.environment.id</ci_id>
+                    <ci_member_id expression="true">"/".join([deployed.container.id,deployed.tomcatName,'%s.vh' % deployed.tomcatName])</ci_member_id>
+                </jython-context>
+            </jython>
+        </steps>
+    </rule>
 
-  <rule name="tomcat.repository_remove" scope="deployed">
-    <conditions>
-      <type>tomcat.DeployedPackage</type>
-      <operation>DESTROY</operation>
-    </conditions>
-    <steps>
-      <jython>
-        <order>39</order>
-        <description expression="true">"Remove '%s' tomcat.Server from the environment " % (previousDeployed.tomcatName) </description>
-        <script>repository/ci/remove-from-environment.py</script>
-        <jython-context>
-          <ci_id expression="true">previousDeployedApplication.environment.id</ci_id>
-          <ci_member_id expression="true">"/".join([previousDeployed.container.id,previousDeployed.tomcatName])</ci_member_id>
-        </jython-context>
-      </jython>
-      <jython>
-        <order>39</order>
-        <description expression="true">"Remove '%s' tomcat.VirtualHost from the environment " % (previousDeployed.tomcatName) </description>
-        <script>repository/ci/remove-from-environment.py</script>
-        <jython-context>
-          <ci_id expression="true">previousDeployedApplication.environment.id</ci_id>
-          <ci_member_id expression="true">"/".join([previousDeployed.container.id, previousDeployed.tomcatName,'%s.vh' % previousDeployed.tomcatName])</ci_member_id>
-        </jython-context>
-      </jython>
-      <jython>
-        <order>39</order>
-        <description expression="true">"Delete '%s' tomcat.Server from the repository " % (previousDeployed.tomcatName) </description>
-        <script>repository/ci/destroy.py</script>
-        <jython-context>
-          <ci_id expression="true">"/".join([previousDeployed.container.id,previousDeployed.tomcatName])</ci_id>
-        </jython-context>
-      </jython>
-    </steps>
-  </rule>
+    <rule name="tomcat.repository_remove" scope="deployed">
+        <conditions>
+            <type>tomcat.DeployedPackage</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <jython>
+                <order>39</order>
+                <description expression="true">"Remove '%s' tomcat.Server from the environment " % (previousDeployed.tomcatName)</description>
+                <script>repository/ci/remove-from-environment.py</script>
+                <jython-context>
+                    <ci_id expression="true">previousDeployedApplication.environment.id</ci_id>
+                    <ci_member_id expression="true">"/".join([previousDeployed.container.id,previousDeployed.tomcatName])</ci_member_id>
+                </jython-context>
+            </jython>
+            <jython>
+                <order>39</order>
+                <description expression="true">"Remove '%s' tomcat.VirtualHost from the environment " % (previousDeployed.tomcatName)</description>
+                <script>repository/ci/remove-from-environment.py</script>
+                <jython-context>
+                    <ci_id expression="true">previousDeployedApplication.environment.id</ci_id>
+                    <ci_member_id expression="true">"/".join([previousDeployed.container.id, previousDeployed.tomcatName,'%s.vh' %
+                        previousDeployed.tomcatName])
+                    </ci_member_id>
+                </jython-context>
+            </jython>
+            <jython>
+                <order>39</order>
+                <description expression="true">"Delete '%s' tomcat.Server from the repository " % (previousDeployed.tomcatName)</description>
+                <script>repository/ci/destroy.py</script>
+                <jython-context>
+                    <ci_id expression="true">"/".join([previousDeployed.container.id,previousDeployed.tomcatName])</ci_id>
+                </jython-context>
+            </jython>
+        </steps>
+    </rule>
 </rules>

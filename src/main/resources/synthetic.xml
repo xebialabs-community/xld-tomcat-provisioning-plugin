@@ -9,12 +9,13 @@
 <!--
     Note: If you modify this file, you must restart the XL Deploy server.
 -->
-<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <type type="tomcat.DeployedPackage" extends="file.DeployedFolder" deployable-type="tomcat.Package">
-    <generate-deployable type="tomcat.Package" extends="file.Folder"/>
-    <property name="tomcatName" category="Repository"/>
-    <property name="tomcatHome" category="Repository"/>
-    <property name="tomcatStartCommand" category="Repository"/>
-    <property name="tomcatStopCommand" category="Repository"/>
-  </type>
+<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <type type="tomcat.DeployedPackage" extends="file.DeployedFolder" deployable-type="tomcat.Package">
+        <generate-deployable type="tomcat.Package" extends="file.Folder"/>
+        <property name="tomcatName" category="Repository"/>
+        <property name="tomcatHome" category="Repository"/>
+        <property name="tomcatStartCommand" category="Repository"/>
+        <property name="tomcatStopCommand" category="Repository"/>
+    </type>
 </synthetic>

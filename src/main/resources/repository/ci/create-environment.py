@@ -14,4 +14,3 @@ from repository import RepositoryHelper
 if not repositoryService.exists(ci_id):
     helper = RepositoryHelper(repositoryService, metadataService)
     helper.create_or_update(ci_type, ci_id, {})
-

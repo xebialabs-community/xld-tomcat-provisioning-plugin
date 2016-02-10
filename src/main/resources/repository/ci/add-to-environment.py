@@ -12,4 +12,4 @@
 from repository import RepositoryHelper
 
 helper = RepositoryHelper(repositoryService, metadataService)
-helper.add_member(ci_id,ci_member_id)
+helper.add_member(ci_id, ci_member_id)
