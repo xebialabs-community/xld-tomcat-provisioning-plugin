@@ -9,6 +9,5 @@
     <property name="tomcatHome" category="Repository"/>
     <property name="tomcatStartCommand" category="Repository"/>
     <property name="tomcatStopCommand" category="Repository"/>
-    <property name="enviromentId" required="false" category="Repository"/>
   </type>
 </synthetic>
