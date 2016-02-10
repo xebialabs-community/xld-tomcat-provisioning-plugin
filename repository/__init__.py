@@ -12,10 +12,9 @@ class RepositoryHelper(object):
         for key, value in ci_properties.iteritems():
             print "set ci properties %s=%s" % (key,value)
             ci.setProperty(key,value)
-        self.createOrUpdate(ci)
+        self.do_create_or_update(ci)
 
-
-    def createOrUpdate(self, ci):
+    def do_create_or_update(self, ci):
         if self.repositoryService.exists(ci.id):
             print "-- %s : updated" % ci
             return self.repositoryService.update(ci.id,ci)
@@ -36,7 +35,7 @@ class RepositoryHelper(object):
         print "Add %s to %s" % (ci_member_id, members)
         members.add(self.repositoryService.read(ci_member_id))
         ci.members = members
-        self.createOrUpdate(ci)
+        self.do_create_or_update(ci)
 
     def remove_member(self, ci_id, ci_member_id):
         if ci_id is None:
@@ -48,9 +47,9 @@ class RepositoryHelper(object):
             try:
                 members.remove(self.repositoryService.read(ci_member_id))
                 ci.members = members
-                self.createOrUpdate(ci)
+                self.do_create_or_update(ci)
             except KeyError, e:
-                print "%s member not found..skip" % str(e)
+                print "%s member not found...skip" % str(e)
 
 
 
