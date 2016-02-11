@@ -20,6 +20,7 @@
                 <freemarker-context>
                     <path expression="true">deployed.tomcatHome</path>
                 </freemarker-context>
+                <upload-artifact>false</upload-artifact>
             </os-script>
             <jython>
                 <order>60</order>
