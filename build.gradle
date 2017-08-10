@@ -14,15 +14,6 @@ apply plugin: 'eclipse'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-repositories {
-  mavenLocal()
-  mavenCentral()
-  maven {
-    url 'https://dist.xebialabs.com/public/maven2'
-  }
-
-}
-
 license {
     header rootProject.file('src/main/license/xebialabs_community.license')
     strictCheck true
